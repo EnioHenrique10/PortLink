@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - PortaLink</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background-color: #000;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      width: 100%;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+      color: #00ff88;
+    }
+
+    .navbar span {
+      font-weight: 700;
+      color: #ffcc00;
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .dashboard-container {
+      padding: 40px 20px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .dashboard-container h2 {
+      color: #00ff88;
+      margin-bottom: 30px;
+      font-size: 2rem;
+    }
+
+    /* CARDS DE NAVEGAÇÃO */
+    .nav-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      border: 1px solid #333;
+    }
+
+    .card:hover {
+      background-color: #00ff88;
+      color: #000;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .card:hover p {
+      font-weight: bold;
+    }
+
+    .hover-animado {
+      transition: all 0.3s ease;
+      display: inline-block;
+      color: #ffffff;
+    }
+
+    .hover-animado:hover {
+      color: #ffcc00;
+      transform: scale(1.1);
+      text-shadow: 0 0 8px #ffcc00;
+    }
+
+    /* RODAPÉ */
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <h1 class="hover-animado">PortaLink</h1>
+    <p>Seja bem-vindo, <span id="nomeUsuario">usuário</span>. Gerencie suas atividades com eficiência.</p>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="dashboard-container">
+    <h2>Menu Principal</h2>
+    <p>Selecione uma das opções abaixo para acessar as funcionalidades do sistema.</p>
+
+    <div class="nav-cards">
+      <a href="chat.html" class="card">
+        <i class="fas fa-comments"></i> Chat entre Porteiros
+      </a>
+      <a href="ocorrencias.html" class="card">
+        <i class="fas fa-exclamation-circle"></i> Registrar Ocorrência
+      </a>
+      <a href="suspeitas.html" class="card">
+        <i class="fas fa-eye"></i> Atitudes Suspeitas
+      </a>
+      <a href="galeria.html" class="card">
+        <i class="fas fa-file-alt"></i> Visualizar Ocorrências Registradas
+      </a>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer>
+    DevSitee © 2025. Todos os direitos reservados. | Desenvolvido com foco na eficiência e segurança.
+  </footer>
+
+  <script>
+    const nome = localStorage.getItem("nomePorteiro");
+    document.getElementById("nomeUsuario").textContent = nome ? nome : "usuário";
+  </script>
+
+</body>
+</html>

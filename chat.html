@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat - Portalink</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --fundo: #121212;
+      --verde: #00e676;
+      --cinza: #1e1e1e;
+      --cinza-claro: #2c2c2c;
+      --texto: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--fundo);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      color: var(--texto);
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background-color: var(--cinza);
+      color: var(--verde);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+    }
+
+    /* ÁREA DE MENSAGENS */
+    #messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background-color: var(--cinza-claro);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      background-color: var(--cinza);
+      padding: 10px 15px;
+      border-radius: 12px;
+      max-width: 70%;
+      word-wrap: break-word;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      position: relative;
+      color: var(--texto);
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: var(--verde);
+      color: #000;
+    }
+
+    .resposta {
+      align-self: flex-start;
+      background-color: #00b248;
+    }
+
+    .message img {
+      max-width: 200px;
+      border-radius: 10px;
+      margin-top: 8px;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: #ff1744;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      display: none;
+    }
+
+    .message:hover .delete-btn {
+      display: block;
+    }
+
+    /* INPUT FIXO */
+    .input-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px;
+      border-top: 1px solid #333;
+      background-color: var(--cinza);
+    }
+
+    .input-area input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background-color: var(--cinza-claro);
+      color: var(--texto);
+    }
+
+    .input-area input[type="file"] {
+      flex: none;
+      color: var(--texto);
+    }
+
+    .input-area button {
+      padding: 10px 20px;
+      background-color: var(--verde);
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .input-area button:hover {
+      background-color: #00c853;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+      background-color: var(--cinza);
+    }
+
+    footer a {
+      color: #000;
+      text-decoration: none;
+      padding: 10px 20px;
+      background-color: var(--verde);
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      background-color: #00c853;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <h1>Portalink - Chat</h1>
+    <p><strong>Porteiros Online:</strong> Ana, Pedro, Carlos</p>
+  </div>
+
+  <!-- MENSAGENS -->
+  <div id="messages"></div>
+
+  <!-- INPUT -->
+  <div class="input-area">
+    <input type="text" id="msgInput" placeholder="Digite sua mensagem...">
+    <input type="file" id="fileInput" accept="image/*">
+    <button onclick="sendMessage()">📤 Enviar</button>
+    <button onclick="simulateResponse()">🤖 Simular</button>
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <a href="dashboard.html">⬅ Voltar ao Dashboard</a>
+  </footer>
+
+  <script>
+    const messagesContainer = document.getElementById("messages");
+
+    // Carrega mensagens do localStorage
+    window.addEventListener("DOMContentLoaded", () => {
+      const mensagensSalvas = JSON.parse(localStorage.getItem("chatMessages")) || [];
+      mensagensSalvas.forEach((msg, index) => {
+        renderMessage(msg.text, msg.tipo, msg.image, index);
+      });
+    });
+
+    function sendMessage() {
+      const texto = document.getElementById("msgInput").value.trim();
+      const imagem = document.getElementById("fileInput").files[0];
+      if (!texto && !imagem) return;
+
+      if (imagem) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          salvarMensagem(texto, "user", e.target.result);
+        };
+        reader.readAsDataURL(imagem);
+      } else {
+        salvarMensagem(texto, "user");
+      }
+
+      document.getElementById("msgInput").value = "";
+      document.getElementById("fileInput").value = "";
+    }
+
+    function simulateResponse() {
+      setTimeout(() => {
+        const resposta = "Carlos: Recebi sua mensagem!";
+        salvarMensagem(resposta, "resposta");
+      }, 1000);
+    }
+
+    function salvarMensagem(text, tipo, image = null) {
+      const mensagens = JSON.parse(localStorage.getItem("chatMessages")) || [];
+      mensagens.push({ text, tipo, image });
+      localStorage.setItem("chatMessages", JSON.stringify(mensagens));
+      renderAllMessages();
+    }
+
+    function renderAllMessages() {
+      const mensagens = JSON.parse(localStorage.getItem("chatMessages")) || [];
+      messagesContainer.innerHTML = "";
+      mensagens.forEach((msg, index) => {
+        renderMessage(msg.text, msg.tipo, msg.image, index);
+      });
+    }
+
+    function renderMessage(text, tipo, image = null, index = null) {
+      const div = document.createElement("div");
+      div.classList.add("message", tipo);
+
+      const content = document.createElement("div");
+      if (text) content.innerText = text;
+      div.appendChild(content);
+
+      if (image) {
+        const img = document.createElement("img");
+        img.src = image;
+        div.appendChild(img);
+      }
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "X";
+      deleteBtn.classList.add("delete-btn");
+      deleteBtn.onclick = () => deleteMessage(index);
+      div.appendChild(deleteBtn);
+
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function deleteMessage(index) {
+      const mensagens = JSON.parse(localStorage.getItem("chatMessages")) || [];
+      mensagens.splice(index, 1);
+      localStorage.setItem("chatMessages", JSON.stringify(mensagens));
+      renderAllMessages();
+    }
+  </script>
+
+</body>
+</html>

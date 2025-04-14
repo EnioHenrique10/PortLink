@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registrar Ocorrência - Portalink</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #000205;
+      color: white;
+    }
+
+    .navbar {
+      background-color: #000;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .navbar nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+    }
+
+    .navbar nav a:hover {
+      text-decoration: underline;
+    }
+
+    .centro-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    h2 {
+      color: #00ff88;
+      margin-bottom: 25px;
+    }
+
+    #formulario {
+      background-color: #1a1a1a;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #formulario input,
+    #formulario textarea,
+    #formulario button {
+      margin-bottom: 15px;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+
+    #formulario input, 
+    #formulario textarea {
+      background-color: #2a2a2a;
+      color: white;
+    }
+
+    #formulario button {
+      background-color: #00ff88;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #formulario button:hover {
+      background-color: #00cc66;
+    }
+
+    .link-ocorrencias {
+      margin-top: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #00ff88;
+    }
+
+    .link-ocorrencias:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>Portalink</h1>
+    <nav>
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="ocorrencias.html">🚨 Nova Ocorrência</a>
+      <a href="galeria.html">📋 Ocorrências Registradas</a>
+    </nav>
+  </div>
+
+  <div class="centro-container">
+    <h2>Registrar Nova Ocorrência</h2>
+
+    <form id="formulario">
+      <input type="text" id="porteiro" placeholder="Seu nome" required>
+      <input type="text" id="tipo" placeholder="Tipo de ocorrência (ex: Invasão, Barulho, Etc)" required>
+      <textarea id="mensagem" placeholder="Descreva o ocorrido..." rows="5" required></textarea>
+      <input type="file" id="imagem" accept="image/*">
+      <button type="submit">Enviar Ocorrência</button>
+    </form>
+
+    <a href="galeria.html" class="link-ocorrencias">➡ Ver todas as ocorrências registradas</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('formulario');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nome = document.getElementById('porteiro').value.trim();
+      const tipo = document.getElementById('tipo').value.trim();
+      const mensagem = document.getElementById('mensagem').value.trim();
+      const imagemInput = document.getElementById('imagem');
+      const imagem = imagemInput.files[0];
+
+      const salvarOcorrencia = (imagemDataUrl) => {
+        const dados = {
+          nome,
+          tipo,
+          mensagem,
+          imagem: imagemDataUrl || null,
+          data: new Date().toLocaleString()
+        };
+
+        let ocorrencias = JSON.parse(localStorage.getItem('ocorrencias')) || [];
+        ocorrencias.unshift(dados); // Adiciona no topo
+        localStorage.setItem('ocorrencias', JSON.stringify(ocorrencias));
+
+        alert('Ocorrência registrada com sucesso!');
+        form.reset();
+        imagemInput.value = "";
+      };
+
+      if (imagem) {
+        const leitor = new FileReader();
+        leitor.onload = () => salvarOcorrencia(leitor.result);
+        leitor.readAsDataURL(imagem);
+      } else {
+        salvarOcorrencia(null);
+      }
+    });
+  </script>
+
+</body>
+</html>

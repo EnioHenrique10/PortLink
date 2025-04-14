@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Atitudes Suspeitas - PortaLink</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    .navbar {
+      background-color: #111;
+      color: #00ff88;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0, 255, 136, 0.1);
+    }
+
+    .container {
+      padding: 30px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    form {
+      background: #111;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 15px 30px rgba(0, 255, 136, 0.08);
+      margin-bottom: 40px;
+    }
+
+    form input,
+    form textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      background-color: #1a1a1a;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    form input::placeholder,
+    form textarea::placeholder {
+      color: #888;
+    }
+
+    form input:focus,
+    form textarea:focus {
+      outline: none;
+      border-color: #00ff88;
+      box-shadow: 0 0 5px #00ff88;
+    }
+
+    form button {
+      background-color: #00ff88;
+      color: #000;
+      padding: 14px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    form button:hover {
+      background-color: #00e67a;
+      transform: scale(1.03);
+    }
+
+    .ocorrencia {
+      background: #111;
+      border-left: 5px solid #00ff88;
+      margin-bottom: 25px;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.05);
+    }
+
+    .ocorrencia h3 {
+      color: #00ff88;
+      margin-bottom: 10px;
+    }
+
+    .ocorrencia p {
+      margin: 8px 0;
+      color: #ccc;
+    }
+
+    .ocorrencia .data {
+      font-size: 0.9em;
+      color: #aaa;
+      margin-top: 10px;
+    }
+
+    .ocorrencia img {
+      max-width: 100%;
+      margin-top: 12px;
+      border-radius: 10px;
+      width: 240px;
+      cursor: pointer;
+    }
+
+    .btn-apagar {
+      margin-top: 10px;
+      background: #ff2e2e;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-apagar:hover {
+      background: #cc1f1f;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      background-color: #111;
+    }
+
+    footer a {
+      color: #00ff88;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      flex-direction: column;
+    }
+
+    .modal img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal .fechar {
+      color: #fff;
+      font-size: 30px;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      background: rgba(0,0,0,0.5);
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    PortaLink - Atitudes Suspeitas
+  </div>
+
+  <div class="container">
+    <form id="suspeitaForm">
+      <input type="text" id="localSuspeita" placeholder="Local (ex: Bloco A)" required>
+      <textarea id="descSuspeita" placeholder="Descreva o comportamento suspeito..." rows="4" required></textarea>
+      <input type="file" id="imagemSuspeita" accept="image/*">
+      <button type="submit">Registrar Suspeita</button>
+    </form>
+
+    <div>
+      <h3 style="color:#00ff88;">Registros Recentes</h3>
+      <ul id="suspeitasRegistradas" style="list-style:none; padding:0;"></ul>
+    </div>
+
+    <div class="ocorrencia">
+      <h3>Suspeito</h3>
+      <p><strong>Porteiro:</strong> Marcos Oliveira</p>
+      <p>Homem suspeito: Indivíduo do sexo masculino foi visto circulando lentamente próximo à Rua do Hospício, observando veículos e residências de forma insistente. Demonstrava comportamento nervoso e constantemente colocava a mão na cintura, sugerindo que poderia estar armado.</p>
+      <img src="imgs/roubo1.png" alt="Imagem da ocorrência" onclick="mostrarImagem(this)">
+      <div class="data">10/04/2025 22:43</div>
+    </div>
+
+    <footer>
+      <a href="dashboard.html">⬅ Voltar ao Dashboard</a>
+    </footer>
+  </div>
+
+  <div class="modal" id="zoomModal">
+    <span class="fechar" onclick="fecharZoom()">×</span>
+    <img id="zoomedImg" src="">
+  </div>
+
+  <script>
+    const form = document.getElementById("suspeitaForm");
+    const lista = document.getElementById("suspeitasRegistradas");
+    const imagemInput = document.getElementById("imagemSuspeita");
+    const modal = document.getElementById("zoomModal");
+    const zoomedImg = document.getElementById("zoomedImg");
+
+    let suspeitas = JSON.parse(localStorage.getItem("suspeitas")) || [];
+
+    function renderizar() {
+      lista.innerHTML = "";
+      suspeitas.forEach((s, index) => {
+        const li = document.createElement("li");
+        li.classList.add("ocorrencia");
+        li.innerHTML = `
+          <h3>Registro ${index + 1}</h3>
+          <p><strong>Local:</strong> ${s.local}</p>
+          <p>${s.descricao}</p>
+          <div class="data">${s.data}</div>
+          ${s.imagem ? `<img src="${s.imagem}" alt="Imagem suspeita" onclick="abrirZoom('${s.imagem}')">` : ""}
+          <button class="btn-apagar" onclick="removerSuspeita(${index})">🗑 Apagar</button>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    function abrirZoom(src) {
+      zoomedImg.src = src;
+      modal.classList.add("active");
+    }
+
+    function fecharZoom() {
+      modal.classList.remove("active");
+      zoomedImg.src = "";
+    }
+
+    modal.addEventListener("click", function(e) {
+      if (e.target === modal) {
+        fecharZoom();
+      }
+    });
+
+    form.onsubmit = function(e) {
+      e.preventDefault();
+
+      const local = document.getElementById("localSuspeita").value.trim();
+      const desc = document.getElementById("descSuspeita").value.trim();
+      const arquivo = imagemInput.files[0];
+      const data = new Date().toLocaleString();
+
+      if (arquivo) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const nova = {
+            local,
+            descricao: desc,
+            data,
+            imagem: e.target.result
+          };
+          salvarNova(nova);
+        };
+        reader.readAsDataURL(arquivo);
+      } else {
+        const nova = { local, descricao: desc, data, imagem: null };
+        salvarNova(nova);
+      }
+    };
+
+    function salvarNova(nova) {
+      suspeitas.unshift(nova);
+      localStorage.setItem("suspeitas", JSON.stringify(suspeitas));
+      form.reset();
+      renderizar();
+    }
+
+    function removerSuspeita(index) {
+      if (confirm("Tem certeza que deseja apagar esta suspeita?")) {
+        suspeitas.splice(index, 1);
+        localStorage.setItem("suspeitas", JSON.stringify(suspeitas));
+        renderizar();
+      }
+    }
+
+    renderizar();
+  </script>
+
+</body>
+</html>

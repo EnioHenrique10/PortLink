@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ocorrências Registradas - PortaLink</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #000;
+      color: #fff;
+      padding-bottom: 40px;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background-color: #000;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+      color: #00ff88;
+    }
+
+    .navbar nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+    }
+
+    .navbar nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* TÍTULO */
+    .titulo {
+      padding: 30px 20px 10px;
+      text-align: center;
+      color: #00ff88;
+    }
+
+    /* LISTA DE OCORRÊNCIAS */
+    #lista {
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .ocorrencia {
+      background: #1a1a1a;
+      border-left: 5px solid #00ff88;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .ocorrencia:hover {
+      transform: scale(1.02);
+    }
+
+    .ocorrencia h3 {
+      margin-bottom: 5px;
+      color: #00ff88;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .ocorrencia p {
+      margin: 8px 0;
+      color: #ccc;
+    }
+
+    .ocorrencia .data {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    .ocorrencia img {
+      max-width: 100%;
+      margin-top: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 200px;
+      transition: transform 0.3s ease;
+    }
+
+    .ocorrencia img:hover {
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+    }
+
+    .modal .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .modal .close-btn:hover {
+      background: rgba(0,0,0,0.9);
+    }
+
+    .voltar {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      color: #00ff88;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .voltar:hover {
+      text-decoration: underline;
+    }
+
+    /* Botão de remover */
+    .remover-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .remover-btn:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <h1>Portalink</h1>
+    <nav>
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="ocorrencias.html">➕ Nova Ocorrência</a>
+    </nav>
+  </div>
+
+  <!-- TÍTULO -->
+  <h2 class="titulo">Ocorrências Registradas</h2>
+
+  <!-- LISTA DE OCORRÊNCIAS -->
+  <div id="lista">
+    <!-- OCORRÊNCIAS FIXAS -->
+    <div class="ocorrencia">
+      <button class="remover-btn" title="Remover ocorrência">❌</button>
+      <h3>Invasão ao prédio</h3>
+      <p><strong>Porteiro:</strong> João Silva</p>
+      <p>Indivíduos pularam o muro lateral por volta das 2h da manhã. A ação ocorreu na Rua da Aurora, centro do Recife.</p>
+      <img src="imgs/roubo01.png" alt="Imagem da ocorrência" onclick="mostrarImagem(this)">
+      <div class="data">11/04/2025 02:15</div>
+    </div>
+
+    <div class="ocorrencia">
+      <button class="remover-btn" title="Remover ocorrência">❌</button>
+      <h3>Roubo de carro na frente do prédio</h3>
+      <p><strong>Porteiro:</strong> Marcos Oliveira</p>
+      <p>Um carro foi roubado enquanto o morador estacionava na Rua do Hospício. O meliante estava armado.</p>
+      <img src="imgs/roubocarro.png" alt="Imagem da ocorrência" onclick="mostrarImagem(this)">
+      <div class="data">10/04/2025 22:43</div>
+    </div>
+
+    <div class="ocorrencia">
+      <button class="remover-btn" title="Remover ocorrência">❌</button>
+      <h3>Arrombamento por trás do prédio</h3>
+      <p><strong>Porteiro:</strong> Ana Costa</p>
+      <p>Portão de serviço foi arrombado nos fundos do prédio, acesso pela Rua do Riachuelo. Danos materiais apenas.</p>
+      <img src="imgs/portao.png" alt="Imagem da ocorrência" onclick="mostrarImagem(this)">
+      <div class="data">09/04/2025 04:32</div>
+    </div>
+
+    <div class="ocorrencia">
+      <button class="remover-btn" title="Remover ocorrência">❌</button>
+      <h3>Assalto de celular fora do prédio</h3>
+      <p><strong>Porteiro:</strong> Ricardo Nascimento</p>
+      <p>Morador foi assaltado enquanto andava pela calçada da Rua da Imperatriz. O suspeito fugiu de bicicleta.</p>
+      <img src="imgs/roubo04.webp" alt="Imagem da ocorrência" onclick="mostrarImagem(this)">
+      <div class="data">08/04/2025 19:20</div>
+    </div>
+  </div>
+
+  <!-- Modal da Imagem -->
+  <div id="modal" class="modal">
+    <button class="close-btn" onclick="fecharImagem()">×</button>
+    <img id="imagemExpandida" src="" alt="Imagem Ampliada">
+  </div>
+
+  <!-- VOLTAR -->
+  <a class="voltar" href="dashboard.html">⬅ Voltar ao Dashboard</a>
+
+  <!-- SCRIPT -->
+  <script>
+    // Exibe a imagem em tela cheia
+    function mostrarImagem(imagem) {
+      const modal = document.getElementById('modal');
+      const imgExpandida = document.getElementById('imagemExpandida');
+      modal.style.display = 'flex';
+      imgExpandida.src = imagem.src;
+    }
+
+    // Fecha o modal
+    function fecharImagem() {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'none';
+    }
+
+    // Carrega as ocorrências do localStorage
+    window.onload = function() {
+      const listaOcorrencias = document.getElementById('lista');
+      const ocorrenciasSalvas = JSON.parse(localStorage.getItem('ocorrencias')) || [];
+
+      ocorrenciasSalvas.forEach((ocorrencia, index) => {
+        const div = document.createElement('div');
+        div.className = 'ocorrencia';
+        div.innerHTML = `
+          <button class="remover-btn" onclick="removerOcorrencia(${index})" title="Remover ocorrência">❌</button>
+          <h3>${ocorrencia.titulo}</h3>
+          <p><strong>Porteiro:</strong> ${ocorrencia.porteiro}</p>
+          <p>${ocorrencia.descricao}</p>
+          <img src="${ocorrencia.imagem}" alt="Imagem da ocorrência" onclick="mostrarImagem(this)">
+          <div class="data">${ocorrencia.data}</div>
+        `;
+        listaOcorrencias.appendChild(div);
+      });
+    }
+
+    // Remove uma ocorrência salva
+    function removerOcorrencia(index) {
+      const ocorrencias = JSON.parse(localStorage.getItem('ocorrencias')) || [];
+      ocorrencias.splice(index, 1);
+      localStorage.setItem('ocorrencias', JSON.stringify(ocorrencias));
+      location.reload();
+    }
+  </script>
+
+</body>
+</html>
